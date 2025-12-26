@@ -1,6 +1,12 @@
+<div align="center">
+
+<img src="docs/main.png" alt="Dynamo" width="800"/>
+
 # Dynamo
 
-AI-powered on-chain security exploit detection and audit system for Solana blockchain.
+**AI-powered on-chain security exploit detection and audit system for Solana blockchain.**
+
+</div>
 
 ## Overview
 
