@@ -32,8 +32,41 @@ export interface MonitorAddressRequest {
   callback?: (alert: SecurityAlert) => void;
 }
 
+export type ExploitType = 
+  | 'reentrancy'
+  | 'integer_overflow'
+  | 'integer_underflow'
+  | 'authority_bypass'
+  | 'unauthorized_access'
+  | 'account_confusion'
+  | 'signer_bypass'
+  | 'pda_mismatch'
+  | 'missing_owner_check'
+  | 'missing_signer_check'
+  | 'arbitrary_code_execution'
+  | 'flash_loan_attack'
+  | 'price_manipulation'
+  | 'front_running'
+  | 'sandwich'
+  | 'type_confusion'
+  | 'insufficient_rent_exemption'
+  | 'oracle_manipulation'
+  | 'dos_attack'
+  | 'arbitrary_cpi'
+  | 'bump_seed_canonical'
+  | 'account_data_mismatch'
+  | 'missing_rent_check'
+  | 'unchecked_account_ownership'
+  | 'token_account_validation'
+  | 'mint_authority_bypass'
+  | 'freeze_authority_bypass'
+  | 'duplicate_account_mutable'
+  | 'account_reinitialization'
+  | 'closed_account_revival'
+  | 'unknown';
+
 export interface Exploit {
-  exploit_type: string;
+  exploit_type: ExploitType;
   severity: Severity;
   description: string;
   location: string;
