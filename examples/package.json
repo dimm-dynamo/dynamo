@@ -1,0 +1,21 @@
+{
+  "name": "dynamo-examples",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "basic": "ts-node basic-usage.ts",
+    "advanced": "ts-node advanced-usage.ts",
+    "webhook": "ts-node webhook-server.ts"
+  },
+  "dependencies": {
+    "@dynamo/sdk": "^1.0.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
+

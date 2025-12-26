@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: dynamo
+      POSTGRES_USER: dynamo
+      POSTGRES_PASSWORD: dynamo_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dynamo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rust-analyzer:
+    build:
+      context: ./packages/rust-analyzer
+      dockerfile: Dockerfile
+    environment:
+      RUST_LOG: info
+      BIND_ADDRESS: 0.0.0.0:8080
+      SOLANA_RPC_URL: https://api.mainnet-beta.solana.com
+      WORKER_THREADS: 4
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  api-server:
+    build:
+      context: ./packages/api-server
+      dockerfile: Dockerfile
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      SOLANA_RPC_URL: https://api.mainnet-beta.solana.com
+      RUST_ANALYZER_URL: http://rust-analyzer:8080
+      DATABASE_URL: postgresql://dynamo:dynamo_password@postgres:5432/dynamo
+      REDIS_URL: redis://redis:6379
+      LOG_LEVEL: info
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rust-analyzer:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./packages/frontend
+      dockerfile: Dockerfile
+    environment:
+      REACT_APP_API_URL: http://localhost:4000
+      REACT_APP_WS_URL: ws://localhost:4000
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-server
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: dynamo-network
+
