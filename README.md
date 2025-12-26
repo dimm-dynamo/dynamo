@@ -1,4 +1,4 @@
-<div align="center">
+ㄴㄲㄲ<div align="center">
 
 <img src="docs/main.png" alt="Dynamo" width="800"/>
 
@@ -268,10 +268,3 @@ See CONTRIBUTING.md for development guidelines.
 ## License
 
 MIT License - see LICENSE file for details
-
-## Support
-
-- Documentation: https://docs.dynamo.security
-- Issues: https://github.com/dynamo/dynamo/issues
-- Discord: https://discord.gg/dynamo
-
