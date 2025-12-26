@@ -1,4 +1,4 @@
-ㄴㄲㄲ<div align="center">
+<div align="center">
 
 <img src="docs/main.png" alt="Dynamo" width="800"/>
 
